@@ -2,37 +2,53 @@ package two_sum
 
 import (
 	"fmt"
-	"math"
 )
 
 func main() {
 	fmt.Println("Hello")
 }
 
-type Sum struct {
-	child *Sum
-	value int
+func twoPower(num uint64) uint64 {
+	var result uint64 = 1
+
+	for power := uint64(1); power <= num; power++ {
+		result *= 2
+	}
+
+	return result
 }
 
 func twoSum(nums []int, target int) []int {
-	if target == 0 {
-		return []int{}
+
+	if len(nums) < 3 {
+		return []int{0, 1}[:len(nums)]
 	}
 
-	sums := make(map[int]*Sum)
+	numPossibilities := twoPower(uint64(len(nums))) - 1
 
-	indices := []int{1, 2}
+	for i := uint64(1); i <= numPossibilities; i++ {
+		matches := []int{}
+		total := 0
+		hits := 0
+		for expIndex := uint64(0); (hits < 2) && (expIndex < i); expIndex++ {
+			marker := uint64(1) << expIndex
+			bitIsSet := marker&i != 0x0
 
-	numPossibilities := int(math.Pow(2, float64(len(nums))))
-	// num possibilities = 2n-1 where n is len(indices)
+			if bitIsSet {
+				hits++
+				if hits > 2 {
+					break
+				}
 
-	currentSlot := 0
-	nextSlotChange := 1
-	for i := 0; i < numPossibilities; i++ {
-		slotValue := nums[currentSlot]
-		// create buckets
-		sums[currentSlot] = &Sum{child: nil, value: slotValue}
+				matches = append(matches, int(expIndex))
+				total += nums[expIndex]
+				if (total == target) && (len(matches) == 2) {
+					return matches
+				}
+
+			}
+		}
+
 	}
-
-	return indices
+	return []int{}
 }
