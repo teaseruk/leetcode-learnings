@@ -1,7 +1,5 @@
 package palindrome
 
-import "math"
-
 func isPalindrome(x int) bool {
 
 	if x >= 0 {
@@ -16,15 +14,14 @@ func isPalindrome(x int) bool {
 			order++
 		}
 
-		numIters := int(math.Max(1, float64(order)/2.0))
-
+		numIters := (order + 1) / 2
 		for walker := 0; walker < numIters; walker++ {
-			lhs := x / topOrder
+			lhs := (x / topOrder) % 10
 			rhs := x - 10*(x/10)
 			if lhs != rhs {
 				return false
 			}
-			x = (x - lhs*topOrder) / 10
+			x = x / 10
 			topOrder /= 100
 		}
 		return true
