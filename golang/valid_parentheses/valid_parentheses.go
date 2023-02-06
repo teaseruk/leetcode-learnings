@@ -9,15 +9,15 @@ const (
 	closeSquare = ']'
 )
 
+var opposites = map[rune]rune{
+	closeRound:  openRound,
+	closeCurly:  openCurly,
+	closeSquare: openSquare,
+}
+
 func isValid(s string) bool {
 
 	stack := []rune{}
-
-	opposites := map[rune]rune{
-		closeRound:  openRound,
-		closeCurly:  openCurly,
-		closeSquare: openSquare,
-	}
 
 	for _, c := range s {
 		switch c {
